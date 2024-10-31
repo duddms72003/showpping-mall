@@ -35,32 +35,33 @@ class ShoppingMall {
     try {
       int quantity = int.parse(quantityString);
 
-      // 상품 존재 여부 확인
-      bool isProductExist =
-          products.any((product) => product.name == productName);
+      if (quantity <= 0) {
+        print('0개보다 많은 개수의 상품만 담을 수 있어요!');
+      } else {
+        bool isProductExist =
+            products.map((product) => product.name).contains(productName);
 
-      if (!isProductExist) {
-        print('입력한 상품이 존재하지 않습니다.');
-        return;
+        if (!isProductExist) {
+          print('입력한 상품이 존재하지 않습니다.');
+        } else {
+          cart.add({'name': productName, 'quantity': quantity});
+          print('장바구니에 상품이 담겼어요!');
+        }
       }
-
-      // 장바구니에 추가
-      cart.add({'name': productName, 'quantity': quantity});
-      print('장바구니에 상품이 담겼습니다.');
     } catch (e) {
-      print('잘못된 입력입니다. 숫자를 입력해주세요.');
+      print('입력값이 올바르지 않아요!');
     }
   }
 
   void showCart() {
     print('장바구니 목록:');
-    num total = 0; // Declare total as num
+    num total = 0;
     for (var item in cart) {
       Product product = products.firstWhere((p) => p.name == item['name']);
       print('${item['name']} ${item['quantity']}개 (${product.price}원/개)');
       total += item['quantity'] * product.price;
     }
-    print('총 가격: ${total}원');
+    print('총 가격: ${total}원 어치를 담으셨네요 !');
   }
 }
 
@@ -69,10 +70,11 @@ void main() {
 
   while (true) {
     print(
-        '--------------------------------------------------------------------------------');
-    stdout.write('[1]. 상품 목록 보기 | [2]. 상품 장바구니에 담기 | [3]. 장바구니 보기 | [4]. 종료\n');
+        '-------------------------------------------------------------------------------------');
+    stdout.write(
+        '[1] 상품 목록 보기 / [2] 장바구니에 담기 / [3] 장바구니에 담긴 상품의 총 가격 보기 / [4] 종료\n');
     print(
-        '---------------------------------------------------------------------------------');
+        '-------------------------------------------------------------------------------------');
     stdout.write('원하는 메뉴를 선택하세요: ');
     String choice = stdin.readLineSync()!;
 
